@@ -88,6 +88,8 @@ function rewrite_config {
         set vpn ipsec site-to-site peer ${REMOTE_IP} tunnel 1 remote prefix ${REMOTE_SUBNET}
     done
 
+    echo "Additions: "
+    show | cat
     commit
     save
     end
@@ -98,7 +100,7 @@ function rewrite_config {
 
 ### check total tunnel count for running vs defined ###
 NUM_REMOTES=${#REMOTES[@]}
-NUM_CONFIGURED_REMOTES=$(sudo grep -c "^conn peer" /etc/ipsec.conf)
+NUM_CONFIGURED_REMOTES=$(sudo grep -c "^conn peer" /etc/ipsec.conf | cat)
 
 if [[ ${NUM_REMOTES} -ne ${NUM_CONFIGURED_REMOTES} ]]; then
     echo "Running config tunnels does not match defined tunnels... updating config"
